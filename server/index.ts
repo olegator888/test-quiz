@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { Request } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import fs from "fs";
@@ -7,6 +7,7 @@ import {Data, Results, SelectedOptions} from "types";
 const dataPath = "./db.json";
 const PORT = 8000;
 
+// @ts-ignore
 const { questions, correctAnswers }: Data = JSON.parse(fs.readFileSync(dataPath));
 
 const app = express();
@@ -18,22 +19,6 @@ app.use(bodyParser.raw());
 app.get("/questions", (req, res) => {
     res.json(questions)
 });
-
-/*
-* export interface Results {
-  correctAmount: number
-  totalAmount: number
-  questions: {
-    question: string
-    correctAnswer: string
-    yourAnswer: string
-    isCorrect: boolean
-  }[]
-}
-*
-*
-*
-* */
 
 app.post("/check", (req: Request<{}, {}, SelectedOptions>, res) => {
     const results: Results = {
