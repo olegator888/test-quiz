@@ -1,12 +1,12 @@
 import style from "./App.module.scss";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Loader from "Loader";
-import {Option, Question, Results, SelectedOptions} from "types";
+import { Option, Question, Results, SelectedOptions } from "types";
 import { ReactComponent as TickIcon } from "assets/tick.svg";
 import classNames from "utils/classNames";
 import ResultsModal from "ResultsModal";
-import {getTime} from "utils/getTime";
+import { getTime } from "utils/getTime";
 
 axios.defaults.baseURL = "http://localhost:8000/";
 
@@ -23,25 +23,31 @@ const App = () => {
   const [time, setTime] = useState(testTime);
   const [testStarted, setTestStarted] = useState(false);
 
-  const buttonText = submitting ? "Проверяем..." : testStarted ? "Закончить" : "Начать";
-  const submitDisabled = (!Object.values(selectedOptions).some(value => value) && testStarted) || submitting;
+  const buttonText = submitting
+    ? "Проверяем..."
+    : testStarted
+    ? "Закончить"
+    : "Начать";
+  const submitDisabled =
+    (!Object.values(selectedOptions).some((value) => value) && testStarted) ||
+    submitting;
   const timer = useRef() as MutableRefObject<ReturnType<typeof setTimeout>>;
   const buttonAction = testStarted ? finishTest : startTest;
 
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const { data } = await axios.get<Question[]>("questions")
+        const { data } = await axios.get<Question[]>("questions");
 
         setQuestions(data);
         resetAnswers(data);
       } catch (e) {
-        console.log(e)
+        console.log(e);
         setError(true);
       }
 
       setLoading(false);
-    }
+    };
 
     fetchQuestions();
   }, []);
@@ -50,12 +56,12 @@ const App = () => {
     if (time === 0) {
       finishTest();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
   function startTest() {
     timer.current = setInterval(() => {
-      setTime(prev => prev - 1);
+      setTime((prev) => prev - 1);
     }, 1000);
 
     setTestStarted(true);
@@ -70,9 +76,9 @@ const App = () => {
 
   function resetAnswers(questions: Question[]) {
     const selectedOptions: SelectedOptions = {};
-    questions.forEach(question => {
-      selectedOptions[question.id] = null
-    })
+    questions.forEach((question) => {
+      selectedOptions[question.id] = null;
+    });
 
     setSelectedOptions(selectedOptions);
   }
@@ -86,10 +92,10 @@ const App = () => {
   }
 
   function selectOption(questionId: Question["id"], optionId: Option["id"]) {
-    setSelectedOptions(prev => ({
+    setSelectedOptions((prev) => ({
       ...prev,
-      [questionId]: optionId
-    }))
+      [questionId]: optionId,
+    }));
   }
 
   async function submit() {
@@ -98,11 +104,14 @@ const App = () => {
     const finalTime = testTime - time;
 
     try {
-      const { data } = await axios.post<Omit<Results, "time">>("check", selectedOptions);
+      const { data } = await axios.post<Omit<Results, "time">>(
+        "check",
+        selectedOptions
+      );
 
       setResults({
         time: getTime(finalTime),
-        ...data
+        ...data,
       });
 
       resetAnswers(questions);
@@ -117,20 +126,17 @@ const App = () => {
 
   let content = (
     <div className={style.questionsContainer}>
-      <div className={style.time}>
-        {getTime(time)}
-      </div>
-      <div className={classNames(
-        style.questions,
-        !testStarted && style.disabled
-      )}>
+      <div className={style.time}>{getTime(time)}</div>
+      <div
+        className={classNames(style.questions, !testStarted && style.disabled)}
+      >
         {questions.map((question, i) => (
           <div key={question.id} className={style.question}>
             <h3 className={style.question__title}>
               {i + 1}. {question.question}
             </h3>
             <div className={style.question__options}>
-              {question.options.map(option => {
+              {question.options.map((option) => {
                 const isSelected = option.id === selectedOptions[question.id];
 
                 return (
@@ -139,15 +145,17 @@ const App = () => {
                     className={style.option}
                     onClick={() => selectOption(question.id, option.id)}
                   >
-                    <div className={classNames(
+                    <div
+                      className={classNames(
                         style.option__mark,
                         isSelected && style.isSelected
-                      )}>
+                      )}
+                    >
                       {isSelected && <TickIcon />}
                     </div>
                     <span>{option.value}</span>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -164,7 +172,7 @@ const App = () => {
   );
 
   if (loading) {
-    content = <Loader />
+    content = <Loader />;
   }
 
   if (error) {
@@ -175,14 +183,12 @@ const App = () => {
           Перезагрузить страницу
         </button>
       </div>
-    )
+    );
   }
 
   return (
     <div className={style.app}>
-      <h1 className={style.title}>
-        Interesting Quiz
-      </h1>
+      <h1 className={style.title}>Interesting Quiz</h1>
       {content}
       <ResultsModal
         results={results}
