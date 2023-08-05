@@ -50,6 +50,7 @@ const App = () => {
     if (time === 0) {
       finishTest();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [time]);
 
   function startTest() {
