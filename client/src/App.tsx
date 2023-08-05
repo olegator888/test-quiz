@@ -46,6 +46,12 @@ const App = () => {
     fetchQuestions();
   }, []);
 
+  useEffect(() => {
+    if (time === 0) {
+      finishTest();
+    }
+  }, [time]);
+
   function startTest() {
     timer.current = setInterval(() => {
       setTime(prev => prev - 1);
