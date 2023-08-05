@@ -1,0 +1,83 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.close {
+  padding: 10px 16px;
+  background-color: #eee;
+  color: #000;
+  margin: 30px auto 0;
+  border-radius: 8px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.results {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+
+  &__time {
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    font-size: 20px;
+  }
+
+  &__title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 400;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+
+      &__answers {
+        display: flex;
+        gap: 20px;
+
+        .answer {
+          &.isCorrect {
+            .answer__title {
+              color: var(--success-color);
+            }
+          }
+
+          &.isWrong {
+            .answer__title {
+              color: var(--danger-color);
+            }
+          }
+        }
+      }
+    }
+  }
+}

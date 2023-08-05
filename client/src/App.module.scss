@@ -1,0 +1,95 @@
+.app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  padding-top: 60px;
+}
+
+.error {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.time {
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity 300ms ease;
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &Container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .question {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+
+    &__options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.6;
+        }
+
+        &__mark {
+          width: 20px;
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          border: 1px solid var(--secondary-color);
+
+          &.isSelected {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+          }
+        }
+      }
+    }
+  }
+}
+
+.submit {
+  margin: 30px auto 0;
+  padding: 10px 18px;
+  color: #fff;
+  background: var(--accent-color);
+  border-radius: 6px;
+
+  &:disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
